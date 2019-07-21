@@ -16,13 +16,14 @@ public class GridFactory {
      * @param columnVewrtices počet vrcholů ve sloupci
      * @return
      */
-    public static OGLBuffers generateGrid (GL2GL3 gl, int rowVertices, int columnVewrtices) {
+    public static OGLBuffers generateGrid (GL2GL3 gl, int rowVertices, int columnVewrtices, boolean hasTexture) {
 
-        float[] vertexBuffer = getVertices(rowVertices, columnVewrtices);
+        float[] vertexBuffer = getVertices(rowVertices, columnVewrtices, hasTexture);
         int[] indexBuffer = getIndices(rowVertices, columnVewrtices);
 
         OGLBuffers.Attrib[] attributes = {
-            new OGLBuffers.Attrib("inPosition", 3)
+            new OGLBuffers.Attrib("inPosition", 3),
+            new OGLBuffers.Attrib("inTextureCoordinates", 2)
         };
 
 //        OGLBuffers.Attrib[] attributes = {
@@ -39,9 +40,10 @@ public class GridFactory {
      * @param yLength
      * @return
      */
-    private static float[] getVertices(int xLength, int yLength) {
+    private static float[] getVertices(int xLength, int yLength, boolean hasTexture) {
 
-        float[] vertexBuffer = new float[xLength * yLength * 3];
+        int vertexPartCount = hasTexture ? 5 : 3;
+        float[] vertexBuffer = new float[xLength * yLength * vertexPartCount];
         int index = 0;
         int z = 0;
 
@@ -52,6 +54,11 @@ public class GridFactory {
                 vertexBuffer[index++] = x;
                 vertexBuffer[index++] = y;
                 vertexBuffer[index++] = z;
+
+                if (hasTexture) {
+                    vertexBuffer[index++] = 1;
+                    vertexBuffer[index++] = 0;
+                }
             }
         }
 

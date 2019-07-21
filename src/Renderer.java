@@ -2,10 +2,7 @@ import com.jogamp.opengl.GL2GL3;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import common.GridFactory;
-import oglutils.OGLBuffers;
-import oglutils.OGLTextRenderer;
-import oglutils.OGLUtils;
-import oglutils.ShaderUtils;
+import oglutils.*;
 import transforms.Camera;
 import transforms.Mat4;
 import transforms.Mat4PerspRH;
@@ -29,20 +26,25 @@ import java.awt.event.*;
 public class Renderer implements GLEventListener, MouseListener,
 		MouseMotionListener, KeyListener {
 
-	private final static int GRID_SIDE_SIZE = 10;
+	private final static int DEFAULT_GRID_SIDE_SIZE = 10;
 
-	private String vertexShaderFileName = "/start.vert",
-			fragmentShaderFileName  = "/start.frag";
+	private String vertexShaderFileName = "/start.vert", fragmentShaderFileName  = "/start.frag";
 
 	int width, height;
 
 	OGLBuffers buffers;
 	OGLTextRenderer textRenderer;
+	OGLTexture2D texture;
 
 	int shaderProgram, locView, locProj;
 
 	private Mat4 proj;
 	private Camera camera;
+
+	// přepínače
+	private boolean showPolygonLines = true;
+	private int gridSize = DEFAULT_GRID_SIDE_SIZE;
+
 
 	@Override
 	public void init(GLAutoDrawable glDrawable) {
@@ -52,10 +54,12 @@ public class Renderer implements GLEventListener, MouseListener,
 
 		textRenderer = new OGLTextRenderer(gl, glDrawable.getSurfaceWidth(), glDrawable.getSurfaceHeight());
 
+		texture = new OGLTexture2D(gl, "/water2.jpg");
+
 		shaderProgram = ShaderUtils.loadProgram(gl, vertexShaderFileName, fragmentShaderFileName,
 				null,null,null,null);
 
-		buffers = GridFactory.generateGrid(gl, GRID_SIDE_SIZE, GRID_SIDE_SIZE);
+		buffers = GridFactory.generateGrid(gl, gridSize, gridSize, true);
 
 		camera = new Camera()
 				.withPosition(new Vec3D(10,10, 5))
@@ -80,12 +84,22 @@ public class Renderer implements GLEventListener, MouseListener,
 		gl.glUniformMatrix4fv(locView, 1, false, camera.getViewMatrix().floatArray(), 0);
 		gl.glUniformMatrix4fv(locProj, 1, false, proj.floatArray(), 0);
 
-		gl.glPolygonMode(GL2GL3.GL_FRONT_AND_BACK, GL2GL3.GL_LINE);
+		if (showPolygonLines){
+			gl.glPolygonMode(GL2GL3.GL_FRONT_AND_BACK, GL2GL3.GL_LINE);
+		} else{
+			gl.glPolygonMode(GL2GL3.GL_FRONT_AND_BACK, GL2GL3.GL_FILL);
+		}
+
+		texture.bind(shaderProgram, "textureID", 0);
 
 		// bind and draw
 		buffers.draw(GL2GL3.GL_TRIANGLE_STRIP, shaderProgram);
 
 		textRenderer.drawStr2D(20, height - 40, "Ovládání:");
+		textRenderer.drawStr2D(20, height - 120, "+-: Zvětšit nebo zmenšit plochu");
+		textRenderer.drawStr2D(20, height - 80, "q: Zobrazit hladinu jako plochu nebo v čarách");
+		textRenderer.drawStr2D(20, height - 160, "w: Zapnout / vypnout vlnění");
+		textRenderer.drawStr2D(20, height - 200, "e: Zapnout / vypnout osvětlení");
 		textRenderer.drawStr2D(width - 300, 20, " (c) PGRF UHK");
 	}
 
@@ -129,6 +143,19 @@ public class Renderer implements GLEventListener, MouseListener,
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_PLUS: // zvětšit plochu
+			case KeyEvent.VK_ADD:
+				gridSize++;
+				break;
+			case KeyEvent.VK_MINUS: // zmenšit plochu
+			case KeyEvent.VK_SUBTRACT:
+				gridSize--;
+				break;
+			case KeyEvent.VK_Q: // čáry nebo plocha
+				showPolygonLines = !showPolygonLines;
+				break;
+		}
 	}
 
 	@Override

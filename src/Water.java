@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class Water  implements GLEventListener {
+public class Water {
 
     private static final int FPS = 60; // animator's target frames per second
     private static final Dimension DIMENSION = new Dimension(1280, 720);
@@ -60,53 +60,4 @@ public class Water  implements GLEventListener {
             e.printStackTrace();
         }
     }
-
-
-
-    @Override
-    public void init(GLAutoDrawable glAutoDrawable) {
-
-        GL2GL3 gl = glAutoDrawable.getGL().getGL2GL3();
-
-        shaderProgram = ShaderUtils.loadProgram(gl, "shaders/start.vert", "shaders/start.frag",
-                null,null,null,null);
-
-        buffers = GridFactory.generateGrid(gl, 20, 20);
-    }
-
-    @Override
-    public void dispose(GLAutoDrawable glAutoDrawable) {
-
-    }
-
-    @Override
-    public void display(GLAutoDrawable glAutoDrawable) {
-
-        GL2GL3 gl = glAutoDrawable.getGL().getGL2GL3();
-
-        gl.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        gl.glClear(GL2GL3.GL_COLOR_BUFFER_BIT | GL2GL3.GL_DEPTH_BUFFER_BIT);
-
-        gl.glUseProgram(shaderProgram);
-
-//        gl.glUniformMatrix4fv(locView, 1, false, camera.getViewMatrix().floatArray(), 0);
-//        gl.glUniformMatrix4fv(locProj, 1, false, proj.floatArray(), 0);
-
-        gl.glPolygonMode(GL2GL3.GL_FRONT_AND_BACK, GL2GL3.GL_LINE);
-
-        // bind and draw
-        buffers.draw(GL2GL3.GL_TRIANGLE_STRIP, shaderProgram);
-        //gl.glDrawElements(GL2GL3.GL_TRIANGLE_STRIP, buffers.getIndexCount(), GL2GL3.GL_UNSIGNED_INT, 0);
-
-//        textRenderer.drawStr2D(3, height - 20, this.getClass().getName());
-//        textRenderer.drawStr2D(width - 90, 3, " (c) PGRF UHK");
-
-    }
-
-    @Override
-    public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int width, int height) {
-
-    }
-
-
 }
