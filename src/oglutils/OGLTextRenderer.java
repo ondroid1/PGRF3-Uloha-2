@@ -40,7 +40,7 @@ public class OGLTextRenderer {
 	 *            height of output rendering frame
 	 */
 	public OGLTextRenderer(GL2GL3 gl, int width, int height) {
-		this(gl, width, height, new Font("SansSerif", Font.PLAIN, 12));
+		this(gl, width, height, new Font("SansSerif", Font.PLAIN, 32));
 	}
 
 	/**
@@ -69,7 +69,6 @@ public class OGLTextRenderer {
 	/**
 	 * Draw string on 2D coordinates of the raster frame
 	 * 
-	 * @param gl
 	 * @param x
 	 *            x position of string in range <0, width-1> of raster frame
 	 * @param y

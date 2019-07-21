@@ -72,7 +72,7 @@ public class Renderer implements GLEventListener, MouseListener,
 	public void display(GLAutoDrawable glDrawable) {
 		GL2GL3 gl = glDrawable.getGL().getGL2GL3();
 
-		gl.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		//gl.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		gl.glClear(GL2GL3.GL_COLOR_BUFFER_BIT | GL2GL3.GL_DEPTH_BUFFER_BIT);
 
 		gl.glUseProgram(shaderProgram);
@@ -85,8 +85,8 @@ public class Renderer implements GLEventListener, MouseListener,
 		// bind and draw
 		buffers.draw(GL2GL3.GL_TRIANGLE_STRIP, shaderProgram);
 
-		textRenderer.drawStr2D(3, height - 20, this.getClass().getName());
-		textRenderer.drawStr2D(width - 90, 3, " (c) PGRF UHK");
+		textRenderer.drawStr2D(20, height - 40, "Ovládání:");
+		textRenderer.drawStr2D(width - 300, 20, " (c) PGRF UHK");
 	}
 
 	@Override

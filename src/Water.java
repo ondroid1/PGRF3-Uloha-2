@@ -12,6 +12,8 @@ import java.awt.event.WindowEvent;
 public class Water  implements GLEventListener {
 
     private static final int FPS = 60; // animator's target frames per second
+    private static final Dimension DIMENSION = new Dimension(1280, 720);
+    private static final String WINDOW_TITLE = "PGRF3 - Ondřej Stieber - Simulace vodní hladiny";
 
     OGLBuffers buffers;
     int shaderProgram;
@@ -19,8 +21,9 @@ public class Water  implements GLEventListener {
     public static void main(String[] args) {
 
         try {
-            Frame testFrame = new Frame(Constants.FRAME_TITLE);
-            testFrame.setSize(512, 384);
+            Frame frame = new Frame(Constants.FRAME_TITLE);
+            frame.setSize(DIMENSION);
+            frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
             // setup OpenGL version
             GLProfile profile = GLProfile.getMaximum(true);
@@ -33,13 +36,13 @@ public class Water  implements GLEventListener {
             canvas.addMouseListener(ren);
             canvas.addMouseMotionListener(ren);
             canvas.addKeyListener(ren);
-            canvas.setSize( 1024, 512 );
+            canvas.setSize(DIMENSION);
 
-            testFrame.add(canvas);
+            frame.add(canvas);
 
             final FPSAnimator animator = new FPSAnimator(canvas, FPS, true);
 
-            testFrame.addWindowListener(new WindowAdapter() {
+            frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
                     new Thread(() -> {
@@ -48,11 +51,10 @@ public class Water  implements GLEventListener {
                     }).start();
                 }
             });
-            testFrame.setTitle(ren.getClass().getName());
-            testFrame.pack();
-            testFrame.setVisible(true);
+            frame.setTitle(WINDOW_TITLE);
+            frame.pack();
+            frame.setVisible(true);
             animator.start(); // start the animation loop
-
 
         } catch (Exception e) {
             e.printStackTrace();
