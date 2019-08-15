@@ -2,9 +2,6 @@ import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
 import common.Constants;
-import common.GridFactory;
-import oglutils.OGLBuffers;
-import oglutils.ShaderUtils;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -14,9 +11,6 @@ public class Water {
     private static final int FPS = 60; // animator's target frames per second
     private static final Dimension DIMENSION = new Dimension(1280, 720);
     private static final String WINDOW_TITLE = "PGRF3 - Ondřej Stieber - Simulace vodní hladiny";
-
-    OGLBuffers buffers;
-    int shaderProgram;
 
     public static void main(String[] args) {
 

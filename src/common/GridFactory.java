@@ -21,10 +21,19 @@ public class GridFactory {
         float[] vertexBuffer = getVertices(rowVertices, columnVewrtices, hasTexture);
         int[] indexBuffer = getIndices(rowVertices, columnVewrtices);
 
-        OGLBuffers.Attrib[] attributes = {
-            new OGLBuffers.Attrib("inPosition", 3),
-            new OGLBuffers.Attrib("inTextureCoordinates", 2)
-        };
+        OGLBuffers.Attrib[] attributes;
+
+        if (hasTexture) {
+            attributes = new OGLBuffers.Attrib[] {
+                    new OGLBuffers.Attrib("inPosition", 3),
+                    new OGLBuffers.Attrib("inTextureCoordinates", 2)
+            };
+        } else {
+            attributes = new OGLBuffers.Attrib[] {
+                    new OGLBuffers.Attrib("inPosition", 3)
+            };
+        }
+
 
 //        OGLBuffers.Attrib[] attributes = {
 //                new OGLBuffers.Attrib("inPosition", 3),
@@ -46,6 +55,7 @@ public class GridFactory {
         float[] vertexBuffer = new float[xLength * yLength * vertexPartCount];
         int index = 0;
         int z = 0;
+        int textureIndex = 0;
 
         for (int col = 0; col < yLength; col++) {
             float y = col / (float) (yLength - 1);
@@ -56,8 +66,8 @@ public class GridFactory {
                 vertexBuffer[index++] = z;
 
                 if (hasTexture) {
-                    vertexBuffer[index++] = 1;
-                    vertexBuffer[index++] = 0;
+                            vertexBuffer[index++] = x;
+                            vertexBuffer[index++] = y;
                 }
             }
         }

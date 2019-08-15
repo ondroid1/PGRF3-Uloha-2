@@ -6,7 +6,7 @@ out vec4 outColor; // výstup z  fragment shaderu
 uniform sampler2D textureID;
 
 void main() {
-	//outColor = vec4(vertColor, 1.0);
-	outColor = vec4(0, 0, 1, 1.0); // blue
+	//outColor = vec4(0, 0, 1, 1.0); // blue
     outColor = texture(textureID, texCoord);
+    //outColor = vec4(vec3(1.0), 1.0);
 } 
