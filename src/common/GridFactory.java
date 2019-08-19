@@ -34,12 +34,6 @@ public class GridFactory {
             };
         }
 
-
-//        OGLBuffers.Attrib[] attributes = {
-//                new OGLBuffers.Attrib("inPosition", 3),
-//                new OGLBuffers.Attrib("inNormal", 3)
-//        };
-
         return new OGLBuffers(gl, vertexBuffer, attributes, indexBuffer);
     }
 
@@ -55,7 +49,6 @@ public class GridFactory {
         float[] vertexBuffer = new float[xLength * yLength * vertexPartCount];
         int index = 0;
         int z = 0;
-        int textureIndex = 0;
 
         for (int col = 0; col < yLength; col++) {
             float y = col / (float) (yLength - 1);

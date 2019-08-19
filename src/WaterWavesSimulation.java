@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class Water {
+public class WaterWavesSimulation {
 
     private static final int FPS = 60; // animator's target frames per second
     private static final Dimension DIMENSION = new Dimension(1280, 720);
